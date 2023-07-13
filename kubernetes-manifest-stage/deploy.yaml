@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-stage
+spec:
+  selector:
+    matchLabels:
+      app: nginx-stage
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-stage
+    spec:
+      containers:
+        - name: nginx-stage
+          image: nginx
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-stage
+  namespace: default
+  labels:
+    app: nginx-stage
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: nginx-stage
